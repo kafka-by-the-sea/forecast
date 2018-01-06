@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>銷售預測</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+
+<style>
+.action {
+padding: 30px;
+}
+.col {
+  padding-top:5px;
+  padding-bottom:5px;
+}
+body {
+    font-family: "Microsoft YaHei","微软雅黑体","微軟雅黑體","Microsoft JhengHei","微軟正黑體",Arial,Helvetica,sans-serif;
+}
+</style>
+
+    </head>
+    <body>
+
+
+    <div class="container theme-showcase" role="main">
+
+<div class="page-header">
+  <h2>銷售額預測 <small></small></h2>
+</div>
+<form action="" method="post">
+      <div class="row">
+<div class="col col-md-3 col-sm-4 col-xs-6">
+        <div class="input-group">
+          <span class="input-group-addon">月購買人數</span>
+          <input type="text" name="buyer" class="form-control" placeholder="月購買人數"  value="{{ buyer }}" aria-describedby="basic-addon1">
+        </div>
+</div>
+
+<div class="col col-md-3 col-sm-4 col-xs-6">
+        <div class="input-group">
+          <span class="input-group-addon">銷售冊數</span>
+          <input type="text" name="sales_book" class="form-control" placeholder="銷售冊數"  value="{{ sales_book }}" aria-describedby="basic-addon1">
+        </div>
+</div>
+
+
+<div class="col col-md-3 col-sm-4 col-xs-6">
+        <div class="input-group">
+          <span class="input-group-addon">hq 書本數</span>
+          <input type="text" name="hq" class="form-control" placeholder="書本數"  value="{{ hq }}" aria-describedby="basic-addon1">
+        </div>
+</div>
+
+<div class="col col-md-3 col-sm-4 col-xs-6">
+        <div class="input-group">
+          <span class="input-group-addon">tl 書本數</span>
+          <input type="text" name="tl" class="form-control" placeholder="書本數"  value="{{ tl }}" aria-describedby="basic-addon1">
+        </div>
+</div>
+<div class="col col-md-3 col-sm-4 col-xs-6">
+        <div class="input-group">
+          <span class="input-group-addon">bl 書本數</span>
+          <input type="text" name="bl" class="form-control" placeholder="書本數"  value="{{ bl }}" aria-describedby="basic-addon1">
+        </div>
+</div>
+
+<div class="col col-md-3 col-sm-4 col-xs-6">
+        <div class="input-group">
+          <span class="input-group-addon">teens 書本數</span>
+          <input type="text" name="teens" class="form-control" placeholder="書本數"  value="{{ teens }}" aria-describedby="basic-addon1">
+        </div>
+</div>
+
+<div class="col col-md-3 col-sm-4 col-xs-6">
+        <div class="input-group">
+          <span class="input-group-addon">girl 書本數</span>
+          <input type="text" name="girl" class="form-control" placeholder="書本數"  value="{{ girl }}" aria-describedby="basic-addon1">
+        </div>
+</div>
+
+<div class="col col-md-3 col-sm-4 col-xs-6">
+        <div class="input-group">
+          <span class="input-group-addon">novel_love 書本數</span>
+          <input type="text" name="novel_love" class="form-control" placeholder="書本數"  value="{{ novel_love }}" aria-describedby="basic-addon1">
+        </div>
+</div>
+
+<div class="col col-md-3 col-sm-4 col-xs-6">
+        <div class="input-group">
+          <span class="input-group-addon">other 書本數</span>
+          <input type="text" name="other" class="form-control" placeholder="書本數"  value="{{ other }}" aria-describedby="basic-addon1">
+        </div>
+</div>
+
+
+
+</div>
+
+<div class="row action">
+<div class="col-md-5"></div>
+<input class="btn btn-success col-md-2" type="submit" value="開始預測">
+<div class="col-md-5"></div>
+</div>
+
+</form>
+
+<div class="panel panel-default">
+  <div class="panel-heading">預測結果</div>
+  <div class="panel-body">
+    月銷售額：{{ result.sales|number_format(0, ".", ",") }} <br/>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">模型績效與p-value</div>
+  <div class="panel-body">
+    <h6>備註1:各變項的p值越小對模型貢獻度越大</h6>
+    <h6>備註2:校正後的R平方越接近1，對模型預測力越好(R平方介於0~1，校正後的R平方有可能是正值或負值)</h6><br/>
+    mse：{{ result.mse }} <br/>
+    r_squared：{{ result.r_squared }} <br/>
+    adj_r_squared：{{ result.adj_r_squared }} <br/>
+    p_value：
+    <ul>
+{% for item in result.p_value %}
+    <li>{{ item }}</li>
+{% endfor %}
+    </ul>
+  </div>
+</div>
+<script
+  src="https://code.jquery.com/jquery-3.2.1.min.js"
+  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+  crossorigin="anonymous"></script>
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+<script>
+$(document).ready(function(){
+    $("form").submit(function(){
+        $("input").each(function(index, obj){
+            if($(obj).val() == "") {
+                $(obj).val(0);
+            }
+        });
+    });
+});
+</script>
+
+</div>
+    </body>
+</html>
